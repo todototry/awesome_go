@@ -20,7 +20,7 @@ func (n *N) pointer() N {
 func main(){
 	var a N = 25
 
-	print("N: %p, %v", &a, a)
+	fmt.Printf("N: %p, %v \n", &a, a)
 	p := &a
 
 	a.value()
