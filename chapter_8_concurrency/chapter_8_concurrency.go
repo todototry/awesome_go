@@ -195,8 +195,21 @@ func GoRuntimeExit(){
 
 
 // 6. 通道：同步模式、异步模式的使用区别，sleep 与 awake的场景 、 事件通知模型实现
+func chanAsnycSync() {
+	//done := make(chan struct{})
+	syncChan := make(chan string)
+	asyncChan := make(chan string, 100)
 
+	// syncChan <- "hello"
+	// syncChan <- "Git"
+	println("syncChan size: capacity:", cap(syncChan), len(syncChan))
+	println("syncChan is nil : ", syncChan == nil)
+	close(syncChan)
 
+	asyncChan <- "hello"
+	println("asyncChan size: capacity:", cap(asyncChan), len(asyncChan))
+
+}
 
 
 // 7. 收发：ok-idiom 或 range 模式
@@ -244,11 +257,15 @@ func main(){
 	println("Demo 3.2 fetch routine result:")
 	goRoutineResult()
 
-	// 4.
+	// 4. 暂停： runtime.Gosched() ， 嵌套 routine 时， 第一层的defer 依然会在 nested routine go之前执行。
 	println("Demo 4. ")
 	routineSchedule()
 
-	// 5.
+	//  5. 停止当前任务： runtime.Goexit() : 仅仅退出当前 routine， defer依然会确保执行
 	println("Demo 5")
 	GoRuntimeExit()
+
+	// 6.
+	chanAsnycSync()
+
 }
