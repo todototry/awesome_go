@@ -4,6 +4,7 @@ import (
 	"time"
 	"sync"
 	"math"
+	"runtime"
 )
 
 // 1. goroutine 会立即计算、 复制执行参数
@@ -81,11 +82,90 @@ func MultiRoutinesWaitingWithSyncWaitGroup() {
 	println("accumulated result :", y)
 }
 
-// 4. 暂停： runtime.Gosched()
+// 3.1 benchmark for routine groups
+
+
+
+// 3.2 Go Routine 没有 Local Storage 时， 协程 ID， 返回值的处理方法.
+func goRoutineResult(){
+	var wg sync.WaitGroup
+	// 匿名struct 数组的创建
+	routineInfo := [5]struct{
+		id int  // 与字面量不一样， 无需 逗号 结尾
+		result int
+	}{}
+
+	for i:=0; i< 5; i++ {
+		wg.Add(1)
+
+		go func(i int) {
+			defer wg.Done()
+
+			routineInfo[i].id = i
+			routineInfo[i].result = i*i
+		}(i)
+	}
+
+	wg.Wait()
+
+	// 使用 struct 数组的姿势， range 与 python 的enumerate相似
+	for i, res := range routineInfo{
+		println("go routine 的返回值： ", i, res.id, res.result)
+	}
+
+}
+
+
+// 4. 暂停： runtime.Gosched() ， 嵌套 routine 时， 第一层的defer 依然会在 nested routine go之前执行。
+func routineSchedule(){
+	runtime.GOMAXPROCS(1)
+	exit := make(chan struct{})
+	exit2 := make(chan struct{})
+
+	go func() {
+		defer func() {
+			println("  I am now in defer of 1st routine.")
+			close(exit)
+		}()
+
+		go func() {
+			defer func() {
+				println("    I am now in defer of 2nd Nested routine.")
+				close(exit2)
+			}()
+			println("    I am now in nested routine...")
+			time.Sleep(time.Second)
+			println("    I am now sleeping in nested routine...")
+		}()
+
+		println("  I am in 1st rouine...")
+		for i:=0; i<=10; i++ {
+			if i == 0 {
+				println("  I am going to give away cpu from 1st routine....")
+				//runtime.Gosched()
+				println("  I am now back in 1st routine after GoSched() ....")
+			}
+		}
+
+
+		time.Sleep(2)
+		println("  I slept for 2s at 1st routine..")
+	}()
+
+	println("I am now in main function ....")
+	<- exit
+	println("1st routine ends")
+	<- exit2
+	println("2nd routine ends")
+}
+
 
 // 5. 停止当前任务： runtime.Goexit()
 
+
+
 // 6. 通道：
+
 
 
 // 7. 收发：ok-idiom 或 range 模式
@@ -125,8 +205,15 @@ func main(){
 	println("Demo 2: ")
 	goRoutineWithChanBlockWait()
 
-	// 3.
+	// 3. waitGroup （多协程退出等待）： sync.WaitGroup
 	println("Demo 3: ")
 	MultiRoutinesWaitingWithSyncWaitGroup()
 
+	// 3.2 Go Routine 没有 Local Storage 时， 协程 ID， 返回值的处理方法.
+	println("Demo 3.2 fetch routine result:")
+	goRoutineResult()
+
+	// 4.
+	println("Demo 4. ")
+	routineSchedule()
 }
