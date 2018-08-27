@@ -2,9 +2,10 @@ package main
 
 import (
 	"time"
-	"sync"
 	"math"
 	"runtime"
+	"fmt"
+	"sync"
 )
 
 // 1. goroutine 会立即计算、 复制执行参数
@@ -195,6 +196,7 @@ func GoRuntimeExit(){
 
 
 // 6. 通道：同步模式、异步模式的使用区别，sleep 与 awake的场景 、 事件通知模型实现
+// 6.1 Sync 与 Async 的基本区别
 func chanAsnycSync() {
 	//done := make(chan struct{})
 	syncChan := make(chan string)
@@ -211,9 +213,72 @@ func chanAsnycSync() {
 
 }
 
+// 6.2 Sync同步类的Chan，需先有 receiver 准备接收（然后会被block）， 才能有 send 端发送数据，完成后必须 close，否则造成无限的 block。
+// 从一个被close的channel中接收数据不会被阻塞，而是立即返回，接收完已发送的数据后会返回元素类型的零值
+func syncChan() {
+	c := make(chan int)
+
+	go func() {
+		defer close(c)
+
+		for i:=0; i< 10; i++{
+			c <- 7
+		}
+	}()
+
+	for x:= range c {
+		//i := <-c
+		fmt.Println(x)
+	}
+
+}
+
+func syncChan2() {
+	func() {
+		time.Sleep(2 * time.Second)
+	}()
+
+	c := make(chan int)
+	go func() {
+		defer close(c)
+		for i := 0; i < 10; i = i + 1 {
+			c <- i
+		}
+	}()
+
+	for i := range c {
+		fmt.Println(i)
+	}
+
+	fmt.Println("Finished")
+}
+
+// 6.3 Async异步 Chan的使用： send、receive 的先后没有要求,只要不超出缓冲区大小，就不会被阻塞。
+// 1. make的第二个参数指定缓存的大小：ch := make(chan int, 100)。
+// 2. 通过缓存的使用，可以尽量避免阻塞，提供应用的性能。
+func AsyncChan() {
+	c := make(chan int, 10)
+
+	go func(pool10 chan int) {
+		defer close(pool10)
+		// time.Sleep(time.Second)
+		// 超出 pool size，自动阻塞，将 cpu 让给主线程
+		for i := 0; i< 15 ; i++{
+			pool10 <- i
+		}
+	}(c)
+
+	// 主线程，获取数据，直到 chan 关闭
+	for i := range c {
+		println("data from Async Chan:", i)
+	}
+}
+
+// 6.4 event notify 模型
+
+
 
 // 7. 收发：ok-idiom 或 range 模式
-
 
 
 // 8. 单向： var send chan<- int = make(chan int)
@@ -266,6 +331,13 @@ func main(){
 	GoRuntimeExit()
 
 	// 6.
+	println("Demo 6")
 	chanAsnycSync()
+	syncChan()
+	syncChan2()
+	AsyncChan()
+	// 7.
+
+
 
 }
