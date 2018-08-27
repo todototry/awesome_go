@@ -1,6 +1,25 @@
 package main
 
+import "time"
+
 // 1. goroutine 会立即计算、 复制执行参数
+var c int // 默认值为0
+func counter() int {
+	c++
+	return c
+}
+
+func goRoutineParam() {
+	a := 100
+	go func(x,y int) {
+		time.Sleep(time.Second)
+		println(x,y)
+	}(a, counter())
+
+	a += 100
+	println(a, counter())
+	time.Sleep(time.Second * 2)
+	}
 
 
 // 2. wait (单协程退出): 进程退出时，不会等待协程退出
@@ -44,6 +63,7 @@ package main
 
 
 func main(){
-
+	// 1. goroutine 会立即复制执行参数， 然后启动计算
+	goRoutineParam()
 
 }
