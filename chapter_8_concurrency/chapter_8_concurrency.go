@@ -160,11 +160,42 @@ func routineSchedule(){
 }
 
 
-// 5. 停止当前任务： runtime.Goexit()
+// 5. 停止当前任务： runtime.Goexit() : 仅仅退出当前 routine， defer依然会确保执行
+func GoRuntimeExit(){
+	exit := make(chan struct{})
+	exit2 := make(chan struct{})
+
+	go func() {
+		defer close(exit)
+		defer println("  I am now in defer of 1st routine...")
 
 
+		go func (){
+			defer close(exit2)
+			defer println("    I am now In defer of Nested routine...")
+			println("    I am now in Nested routine before GoExit()...")
+			runtime.Goexit()
+			println("    I am now in Nested routine after GoExit()...")
+		}()
 
-// 6. 通道：
+		println("  I am now in 1st routine before GoExit()...")
+		runtime.Goexit()
+		println("  I am now in 1st routine after GoExit()...")
+	}()
+
+
+	println("I am now in main routine...")
+	<- exit
+	println("1st routine finished...")
+	// runtime.Goexit()
+	<- exit2
+	println("2nd routine finished...")
+
+}
+
+
+// 6. 通道：同步模式、异步模式的使用区别，sleep 与 awake的场景 、 事件通知模型实现
+
 
 
 
@@ -216,4 +247,8 @@ func main(){
 	// 4.
 	println("Demo 4. ")
 	routineSchedule()
+
+	// 5.
+	println("Demo 5")
+	GoRuntimeExit()
 }
