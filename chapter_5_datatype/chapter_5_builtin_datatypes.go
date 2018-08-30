@@ -214,12 +214,53 @@ func main(){
 
 
 	// 5. struct：初始化（顺序法、命名法）、空结构、匿名字段、字段标签、内存布局/内存对齐
-	
+	type Operator struct {
+		userInfo User
+		productInfo struct{  // 匿名结构体
+			name string
+			price float32
+		}
+	}
 
+	o := Operator{
+		userInfo: User{
+			name:"fdy",
+			age:88,
+		},
+		// 匿名结构体，对应字段无法在此处初始化，但能在外部初始化
+	}
+
+	o.productInfo.name = ""
+	o.productInfo.price = 99.9
+
+	type Favor struct {
+		sport string
+		food string
+	}
+
+	type Student struct {
+		userInfo User
+		Favor            // 匿名字段，只提供 类型名
+	}
+
+	// 匿名字段的初始化： 匿名字段被编译器默认取名 与 类型名一直， 如上述 Student 类中，默认增加了Favor 字段
+	student := Student{
+		userInfo: User{
+			age:9,
+			name:"ccc",
+		},
+		Favor:Favor{
+			sport:"Ping-Pong",
+			food:"Vegetable",
+		},
+	}
+
+	fmt.Println(student.Favor.food )
+	fmt.Println(student.food )
 	// 6. Pointer.
 
 
-	// 7. Tuple.
+	// 7. Tuple：Go 语言没有Tuple
 
 
 	}
