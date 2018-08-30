@@ -143,7 +143,7 @@ func routineSchedule(){
 		for i:=0; i<=10; i++ {
 			if i == 0 {
 				println("  I am going to give away cpu from 1st routine....")
-				//runtime.Gosched()
+				runtime.Gosched()
 				println("  I am now back in 1st routine after GoSched() ....")
 			}
 		}
