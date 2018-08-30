@@ -286,7 +286,43 @@ func AsyncChan() {
 
 
 // 9. 选择： select { }
+func selectDemo() {
+	send := func(x chan int, start *int) func() {
+		a := start
+		return func() {
+			*a += 1
+			fmt.Println("send: ", a)
+		}
+	}
 
+	receiver := func(b int) {
+
+		fmt.Println("receive:", b)
+	}
+
+
+
+	x := make(chan int)
+
+	new := 100
+	sender := send(x, &new)
+	for n:=0; n<10; n++ {
+		select {
+		case c = <- x: receiver(c)
+		case x <- new: sender()
+		default:
+			go func() {
+				x <- new
+				new += 1
+				fmt.Println("send in routine:", <-x)
+			}()
+			go func() {
+				fmt.Println("receive in routine:", <-x)
+			}()
+			fmt.Println("default.")
+		}
+	}
+}
 
 // 10. 模式
 
@@ -339,5 +375,7 @@ func main(){
 	// 7.
 
 
-
+	// 9. select
+	selectDemo()
+	time.Sleep(time.Second * 5)
 }

@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+// printf format %x % c 代号
+// 输出格式参考：https://programming.guide/go/fmt-printf-reference-cheat-sheet.html
 func main() {
 	//var x int32
 	x:=1
