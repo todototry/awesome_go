@@ -195,13 +195,26 @@ func main(){
 	var mapint = map[string] int {}
 	mapint["X"] = 1
 
-	
-	// println(i["X"])
-	// print(x)
+	type User struct{
+		name string
+		age uint8
+	}
+
+	// map 的更新： 由于字典被设计成 not address ,因此直接取元素内部的成员会引起赋值会失败
+	var userdict = make(map[int] User)
+	userdict[1] = User{
+		name:"fdy",
+		age:10,
+	}
+	// 语法出现错误， not addressable userdict[1].age += 2
+	u := userdict[1]
+	u.age += 3
+	userdict[1] = u
+	fmt.Printf("%v", userdict)
 
 
 	// 5. struct：初始化（顺序法、命名法）、空结构、匿名字段、字段标签、内存布局/内存对齐
-
+	
 
 	// 6. Pointer.
 
