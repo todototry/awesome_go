@@ -17,6 +17,12 @@ func (y YourT2) MethodFoo(i int, oo string) {
 	fmt.Println(i, oo)
 }
 
+func (y YourT2) lowerCaseMethod(i int, oo string) {
+	//do something
+	fmt.Println(i, oo)
+}
+
+
 func Invoke(any interface{}, name string, args... interface{}) {
 	inputs := make([]reflect.Value, len(args))
 	for i, _ := range args {
@@ -27,5 +33,7 @@ func Invoke(any interface{}, name string, args... interface{}) {
 
 func main() {
 	Invoke(YourT2{}, "MethodFoo", 10, "abc")
+	// lower case Method name will fail to invoke().
+	Invoke(YourT2{}, "lowerCaseMethod", 10, "abc")
 	Invoke(YourT1{}, "MethodBar")
 }
