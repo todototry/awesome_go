@@ -17,13 +17,21 @@ func (y YourT2) MethodFoo(i int, oo string) {
 	fmt.Println(i, oo)
 }
 
-func (y YourT2) lowerCaseMethod(i int, oo string) {
+func (y YourT2) LowerCaseMethod(i int, oo string) {
 	//do something
 	fmt.Println(i, oo)
 }
 
 
 func Invoke(any interface{}, name string, args... interface{}) {
+	defer func() {
+		//recover()
+		err := recover()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
+
 	inputs := make([]reflect.Value, len(args))
 	for i, _ := range args {
 		inputs[i] = reflect.ValueOf(args[i])
