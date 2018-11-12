@@ -5,7 +5,7 @@ import "fmt"
 type N int
 
 func (n N) value() N {
-	n++
+	n++  										   // 复制后以第一个参数传入value()函数中， 因此内部修改不影响外部的n
 	fmt.Println("Origin++: %p, %v", &n ,n)
 	return n
 }
