@@ -110,4 +110,3 @@ func main() {
 	nil_compare()
 	complex_size()
 	}
-	
