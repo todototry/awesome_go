@@ -104,7 +104,10 @@ func complex_size() {
 }
 
 func main() {
-
+	new_nil()
+	quick_fill_nil()
 	quick_fil_zero()
-
+	nil_compare()
+	complex_size()
 	}
+	
