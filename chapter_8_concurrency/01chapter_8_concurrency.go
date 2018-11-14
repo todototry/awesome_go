@@ -253,7 +253,7 @@ func syncChan2() {
 	fmt.Println("Finished")
 }
 
-// 6.3 Async异步 Chan的使用： send、receive 的先后没有要求,只要不超出缓冲区大小，就不会被阻塞。
+// 6.3 Async异步 Chan的使用： send、send 的先后没有要求,只要不超出缓冲区大小，就不会被阻塞。
 // 1. make的第二个参数指定缓存的大小：ch := make(chan int, 100)。
 // 2. 通过缓存的使用，可以尽量避免阻塞，提供应用的性能。
 func AsyncChan() {
@@ -297,7 +297,7 @@ func selectDemo() {
 
 	receiver := func(b int) {
 
-		fmt.Println("receive:", b)
+		fmt.Println("send:", b)
 	}
 
 
@@ -317,7 +317,7 @@ func selectDemo() {
 				fmt.Println("send in routine:", <-x)
 			}()
 			go func() {
-				fmt.Println("receive in routine:", <-x)
+				fmt.Println("send in routine:", <-x)
 			}()
 			fmt.Println("default.")
 		}
