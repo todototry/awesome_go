@@ -113,10 +113,11 @@ func main() {
 	fmt.Printf("after send to chanint1, value: %v, %v ，  len: %d   len: %d  \n", chanint, chanint1,  len(chanint), len(chanint1))
 	fmt.Printf("after send to chanint1, value: %v, %v ，  cap: %d   cap: %d  \n", chanint, chanint1,  cap(chanint), cap(chanint1))
 
-	// TODO: failed.
+	// TODO: failed. but if chanint <- 1 runs in goroutine. it's ok.
 	//chanint <- 1
 	//fmt.Printf("%v, %v ，   %d    %d  \n", chanint, chanint1,  len(chanint), len(chanint1))
 	//fmt.Printf("%v, %v ，   %d    %d  \n", chanint, chanint1,  cap(chanint), cap(chanint1))
+	
 
 	go send()
 
