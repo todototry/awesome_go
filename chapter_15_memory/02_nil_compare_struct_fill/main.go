@@ -5,7 +5,7 @@ import (
 	"unsafe"
 )
 
-
+// http://127.0.0.1:55555/article/summaries.html#nil-zero-value-types
 
 // TODO: 变量自动设置为 nil 的初始化情形
 func new_nil() {
@@ -48,9 +48,9 @@ func new_nil() {
 	var xchanint chan int
 	var xslice []int
 	var xmapint map[string]int
-	fmt.Println( xchanint == nil)  // true
-	fmt.Println( xslice == nil)  // true
-	fmt.Println( xmapint == nil)  // true
+	fmt.Println( xchanint == nil)                     // true
+	fmt.Println( xslice == nil)                       // true
+	fmt.Println( xmapint == nil)                      // true
 
 	// false
 	var xxmakechan = make(chan int)
