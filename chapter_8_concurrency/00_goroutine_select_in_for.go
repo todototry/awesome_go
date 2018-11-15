@@ -117,7 +117,7 @@ func main() {
 	//chanint <- 1
 	//fmt.Printf("%v, %v ，   %d    %d  \n", chanint, chanint1,  len(chanint), len(chanint1))
 	//fmt.Printf("%v, %v ，   %d    %d  \n", chanint, chanint1,  cap(chanint), cap(chanint1))
-	
+
 
 	go send()
 

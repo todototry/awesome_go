@@ -7,14 +7,73 @@ import (
 
 
 
-
+// TODO: 变量自动设置为 nil 的初始化情形
 func new_nil() {
+	fmt.Println("--------ptr new------------")
 	fmt.Println(*new(*int) == nil)         // true
 	fmt.Println(*new([]int) == nil)        // true
 	fmt.Println(*new(map[int]bool) == nil) // true
 	fmt.Println(*new(chan string) == nil)  // true
 	fmt.Println(*new(func()) == nil)       // true
 	fmt.Println(*new(interface{}) == nil)  // true
+
+	fmt.Println("---------new-----------")
+	fmt.Println(new(*int) == nil)         // false
+	fmt.Println(new([]int) == nil)        // false
+	fmt.Println(new(map[int]bool) == nil) // false
+	fmt.Println(new(chan string) == nil)  // false
+	fmt.Println(new(func()) == nil)       // false
+	fmt.Println(new(interface{}) == nil)  // false
+
+	fmt.Println("---------var x-----------")
+
+	var aintptr *int
+	var intslice []int
+	var mapint map[int]bool
+	var chanstr chan string
+	var funcptr func()
+	var object interface{}
+
+	fmt.Println(aintptr == nil)         // false
+	fmt.Println(intslice == nil)        // false
+	fmt.Println(mapint == nil) // false
+	fmt.Println(chanstr == nil)  // false
+	fmt.Println(funcptr == nil)       // false
+	fmt.Println(object == nil)  // false
+
+	fmt.Println("---------make and var len()-----------")
+
+
+	// TODO: 特别点, nil
+	var xchanint chan int
+	var xslice []int
+	var xmapint map[string]int
+	fmt.Println( xchanint == nil)  // true
+	fmt.Println( xslice == nil)  // true
+	fmt.Println( xmapint == nil)  // true
+
+	// false
+	var xxmakechan = make(chan int)
+	var xxmakechan1 = make(chan int, 1)
+	var xxmakechan2 = make(chan int, 2)
+	var makeslice = make(chan int)
+	var makeslice1 = make(chan int, 1)
+	var makeslice2 = make(chan int, 2)
+	var makemap = make(map[string]int)
+	var makemap1 = make(map[string]int, 1)
+	var makemap2 = make(map[string]int, 2)
+
+	fmt.Println( xxmakechan == nil, len(xxmakechan), cap(xxmakechan))  // false
+	fmt.Println( xxmakechan1 == nil, len(xxmakechan1), cap(xxmakechan1))  // false
+	fmt.Println( xxmakechan2 == nil, len(xxmakechan2), cap(xxmakechan2))  // false
+	fmt.Println( makeslice == nil, len(makeslice), cap(makeslice))  // false
+	fmt.Println( makeslice1 == nil, len(makeslice1), cap(makeslice1))  // false
+	fmt.Println( makeslice2 == nil, len(makeslice2), cap(makeslice2))  // false
+	fmt.Println( makemap == nil, len(makemap))  // false
+	fmt.Println( makemap1 == nil, len(makemap1))  // false
+	fmt.Println( makemap2 == nil, len(makemap2))  // false
+	fmt.Println("--------------------")
+
 }
 
 func quick_fill_nil()  {
