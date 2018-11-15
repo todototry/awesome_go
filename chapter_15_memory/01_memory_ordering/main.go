@@ -6,8 +6,8 @@ var a string
 var done bool
 
 func setup() {
-	a = "hello, world"
-	done = true
+	a = "hello, world"    // error: data race.
+	done = true           // error: data race.
 }
 
 func main() {
