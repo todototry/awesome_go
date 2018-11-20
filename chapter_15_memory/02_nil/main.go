@@ -9,6 +9,18 @@ import (
 
 // TODO: 变量自动设置为 nil 的初始化情形
 func new_nil() {
+	/*
+	nil Can Represent Zero Values Of Many Types
+	In Go, nil can represent zero values of the following kinds of types:
+			1. pointer types (including type-unsafe ones).
+			2. map types.
+			3. slice types.
+			4. function types.
+			5. channel types.
+			6. interface types.
+	In other words, in Go, nil may be many values, of different types.
+
+	*/
 	fmt.Println("--------ptr new------------")
 	fmt.Println(*new(*int) == nil)         // true
 	fmt.Println(*new([]int) == nil)        // true

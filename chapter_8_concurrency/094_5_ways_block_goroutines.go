@@ -1,5 +1,11 @@
 package main
 
+/*
+	Ways to block current goroutine ‎forever by using the channel mechanism
+ */
+
+
+
 func main() {
 	// TODO: all the following stmt will cause deadlock.
 
