@@ -1,0 +1,23 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "gorun",
+            "type": "shell",
+            "command": "go run ${file}",
+            "problemMatcher": [
+                "$go"
+            ]
+        },
+        {
+            "label": "gofmt",
+            "type": "shell",
+            "command": "go fmt ${file}",
+            "problemMatcher": [
+                "$go"
+            ]
+        }
+    ]
+}
