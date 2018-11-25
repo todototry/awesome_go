@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "gorun",
+            "label": "go run",
             "type": "shell",
             "command": "go run ${file}",
             "problemMatcher": [
@@ -12,9 +12,9 @@
             ]
         },
         {
-            "label": "gofmt",
+            "label": "go run -race",
             "type": "shell",
-            "command": "go fmt ${file}",
+            "command": "go run -race ${file}",
             "problemMatcher": [
                 "$go"
             ]
