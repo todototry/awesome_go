@@ -3,6 +3,8 @@ package main
 import "testing"
 
 func Test_add(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		a int
 		b int
@@ -16,6 +18,10 @@ func Test_add(t *testing.T) {
 
 		{"add1", args{1, 6}, 7},
 		{"add2", args{3, 3}, 6},
+		{"add3", args{1, 6}, 7},
+		{"add4", args{3, 3}, 6},
+		{"add5", args{1, 6}, 7},
+		{"add6", args{3, 3}, 6},
 	}
 
 	for _, tt := range tests {
